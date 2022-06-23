@@ -5,12 +5,11 @@
   line-height: 1.15;
   text-align: center;
   & a {
-    color: $color-primary-blue;
-    text-decoration: none;
     margin-left: 0.4rem;
-    &:hover {
-      color: $color-primary-accent;
-    }
+    text-decoration: none;
+    color: $color-primary-blue;
+    @include transition(color);
+    @include hoverNoTouch(color, $color-primary-accent);
   }
 }
 

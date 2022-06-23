@@ -8,3 +8,15 @@ $color-primary-blue: #65a4bd;
 $color-primary-accent: #eeaf61;
 
 $gap: 2rem;
+
+@mixin transition($property) {
+  transition: $property 0.5s ease;
+}
+
+@mixin hoverNoTouch($property, $value) {
+  @media (hover: hover) {
+    &:hover {
+      #{$property}: $value;
+    }
+  }
+}

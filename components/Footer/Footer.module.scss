@@ -4,6 +4,7 @@
   height: 50px;
   width: 100%;
   font-size: 0.8em;
+  font-weight: 600;
   color: $color-primary-light;
   background-color: $color-primary-blue;
   opacity: 0.8;
@@ -22,9 +23,8 @@
 
   & a {
     opacity: 0.8;
-    &:hover {
-      opacity: 1;
-    }
+    @include transition(opacity);
+    @include hoverNoTouch(opacity, 1);
   }
 
   &_icon {
