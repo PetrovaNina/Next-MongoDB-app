@@ -1,0 +1,55 @@
+@import "../../styles/constants.scss";
+
+.footer {
+  height: 50px;
+  width: 100%;
+  font-size: 0.8em;
+  color: $color-primary-light;
+  background-color: $color-primary-blue;
+  opacity: 0.8;
+}
+
+.nav {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+  @media (max-width: 500px) {
+    gap: 10%;
+  }
+
+  & a {
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &_icon {
+    width: 25px;
+    height: 25px;
+    display: none;
+    @media (max-width: 500px) {
+      display: block;
+    }
+  }
+
+  &_text {
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
+
+  &_cv {
+    @media (max-width: 500px) {
+      & > span {
+        display: none;
+      }
+      &::after {
+        content: "CV";
+      }
+    }
+  }
+}

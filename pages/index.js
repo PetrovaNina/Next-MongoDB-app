@@ -1,6 +1,7 @@
 import Head from "next/head";
+import { Footer } from "../components/Footer";
 import PaymentForm from "../components/PaymentForm";
-import styles from "../styles/Home.module.scss";
+import s from "../styles/Home.module.scss";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
         />
       </Head>
       <main className="container">
-        <h1 className={styles.title}>
+        <h1 className={s.title}>
           Test task made by
           <a
             href="https://www.linkedin.com/in/nina-petrova-frontend/"
@@ -24,13 +25,14 @@ export default function Home() {
             Nina Petrova
           </a>
         </h1>
-        <p className={styles.description}>
+        <p className={s.description}>
           This app is created with Next.js and Mantine and uses MongoDB for data
           storage.
         </p>
         <PaymentForm />
       </main>
-      <footer className={styles.footer}></footer>
+      {/* <footer className={s.footer}></footer> */}
+      <Footer />
     </>
   );
 }
