@@ -1,0 +1,34 @@
+@import "../../styles/constants.scss";
+.form {
+  label {
+    color: inherit;
+  }
+
+  input {
+    color: $color-primary-blue;
+    &:not([type="password"]) {
+      box-shadow: -1px 1px 3px transparentize($color-primary-dark, 0.5);
+    }
+  }
+
+  :focus,
+  :focus-within {
+    border-color: $color-primary-blue;
+  }
+
+  svg path {
+    fill: $color-primary-blue;
+  }
+
+  .button:not([disabled]) {
+    background-image: linear-gradient(
+      90deg,
+      $color-primary-dark,
+      $color-primary-blue 60%
+    );
+    background-size: 210%;
+    background-position: 99%;
+    @include transition(background-position);
+    @include hoverNoTouch(background-position, 0);
+  }
+}

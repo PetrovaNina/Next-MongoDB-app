@@ -8,6 +8,8 @@ import {
   TextInput,
 } from "@mantine/core";
 
+import s from "./PaymentForm.module.scss";
+
 export default function PaymentForm() {
   const preventNotDigitInput = (e) => {
     /^[^\d]{1}$/g.test(e.key) && e.preventDefault();
@@ -32,10 +34,11 @@ export default function PaymentForm() {
       Amount: null,
     },
   });
-  
+
   return (
     <Box sx={{ width: "100%", maxWidth: 340 }} mx="auto">
       <form
+        className={s.form}
         onSubmit={form.onSubmit((values) => console.log(values))}
         onKeyDown={preventNotDigitInput}
       >
@@ -62,6 +65,12 @@ export default function PaymentForm() {
           placeholder="Card CVV"
           mt="sm"
           maxLength={3}
+          autoComplete="cc-number"
+          sx={() => ({
+            ".mantine-PasswordInput-input": {
+              boxShadow: "-1px 1px 3px #40687987",
+            },
+          })}
           {...form.getInputProps("CVV")}
         />
         <NumberInput
@@ -74,7 +83,9 @@ export default function PaymentForm() {
         />
 
         <Group position="center" mt="xl">
-          <Button type="submit">Submit</Button>
+          <Button type="submit" className={s.button} disabled>
+            Submit
+          </Button>
         </Group>
       </form>
     </Box>
