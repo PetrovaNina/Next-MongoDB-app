@@ -25,20 +25,20 @@ export default function PaymentForm() {
   const addSlash = (value, mass) => {
     return value.length === 2
       ? value + "/"
-      : mass && value.length > 2
+      : mass && value.length > 2 && value[2] !== "/"
       ? value.slice(0, 2) + "/" + value.slice(2)
       : value;
   };
 
   const addNewValue = (e, callback) => {
-    const { id, value } = e.target;
+    const { id, value, maxLength } = e.target;
     const pastedValue = callback(e) || "";
     const newValue =
       id === "Expiration Date"
         ? addSlash(value + pastedValue, pastedValue)
         : value + pastedValue;
 
-    form.setFieldValue(id, newValue);
+    form.setFieldValue(id, newValue.slice(0, maxLength));
   };
 
   const form = useForm({
