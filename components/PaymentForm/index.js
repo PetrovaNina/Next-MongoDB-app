@@ -12,18 +12,29 @@ import s from "./PaymentForm.module.scss";
 
 export default function PaymentForm() {
   const preventNotDigitInput = (e) => {
-    /^[^\d]{1}$/g.test(e.key) && e.preventDefault();
+    /^\D{1}$/g.test(e.key) && e.preventDefault();
+  };
+
+  const preventNotDigitPaste = (e) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData("Text");
+    const onlyDigits = text.replace(/\D/g, "");
+
+    const { id, value } = e.target;
+    const newValue = value + onlyDigits;
+
+    form.setFieldValue(id, newValue);
   };
 
   const form = useForm({
     validate: {
       "Card Number": (val) =>
-        /\d{16}/.test(val) ? null : "Card Number should have 16 digits",
+        /^[\d{16}]&/.test(val) ? null : "Card Number should have 16 digits",
       "Expiration Date": (val) =>
-        val.slice(0, 2) > 12
+        val?.slice(0, 2) > 12
           ? "Invalid month"
-          : val.length < 6
-          ? "Invalid year"
+          : /^[^\d{3}\/\d{4}]&/.test(val)
+          ? "Invalid date"
           : null,
       CVV: (val) => (/\d{3}/.test(val) ? null : "CVV should have 3 digits"),
     },
@@ -40,19 +51,23 @@ export default function PaymentForm() {
       <form
         className={s.form}
         onSubmit={form.onSubmit((values) => console.log(values))}
-        onKeyDown={preventNotDigitInput}
+        onKeyPress={preventNotDigitInput}
+        onPaste={preventNotDigitPaste}
       >
         <TextInput
           required
+          id="Card Number"
           label="Card Number"
           placeholder="1234 5678 9123 4567"
           mt="sm"
           maxLength={16}
+          hideControls={true}
           {...form.getInputProps("Card Number")}
         />
 
         <TextInput
           required
+          id="Expiration Date"
           label="Expiration Date"
           placeholder="MM / YYYY"
           mt="sm"
@@ -61,10 +76,12 @@ export default function PaymentForm() {
         />
         <PasswordInput
           required
+          id="CVV"
           label="CVV"
           placeholder="Card CVV"
           mt="sm"
           maxLength={3}
+          pattern="[0-9]{3}"
           autoComplete="cc-number"
           sx={() => ({
             ".mantine-PasswordInput-input": {
@@ -75,6 +92,7 @@ export default function PaymentForm() {
         />
         <NumberInput
           required
+          id="Amount"
           label="Amount"
           placeholder="Type an amount"
           mt="sm"
@@ -83,7 +101,7 @@ export default function PaymentForm() {
         />
 
         <Group position="center" mt="xl">
-          <Button type="submit" className={s.button} disabled>
+          <Button type="submit" className={s.button}>
             Submit
           </Button>
         </Group>
