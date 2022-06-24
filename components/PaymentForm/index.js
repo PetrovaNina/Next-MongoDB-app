@@ -15,13 +15,28 @@ export default function PaymentForm() {
     /^\D{1}$/g.test(e.key) && e.preventDefault();
   };
 
-  const preventNotDigitPaste = (e) => {
+  const filterPastedValue = (e) => {
     e.preventDefault();
     const text = e.clipboardData.getData("Text");
     const onlyDigits = text.replace(/\D/g, "");
+    return onlyDigits;
+  };
 
+  const addSlash = (value, mass) => {
+    return value.length === 2
+      ? value + "/"
+      : mass && value.length > 2
+      ? value.slice(0, 2) + "/" + value.slice(2)
+      : value;
+  };
+
+  const addNewValue = (e, callback) => {
     const { id, value } = e.target;
-    const newValue = value + onlyDigits;
+    const pastedValue = callback(e) || "";
+    const newValue =
+      id === "Expiration Date"
+        ? addSlash(value + pastedValue, pastedValue)
+        : value + pastedValue;
 
     form.setFieldValue(id, newValue);
   };
@@ -51,8 +66,12 @@ export default function PaymentForm() {
       <form
         className={s.form}
         onSubmit={form.onSubmit((values) => console.log(values))}
-        onKeyPress={preventNotDigitInput}
-        onPaste={preventNotDigitPaste}
+        onKeyPress={(e) => {
+          addNewValue(e, preventNotDigitInput);
+        }}
+        onPaste={(e) => {
+          addNewValue(e, filterPastedValue);
+        }}
       >
         <TextInput
           required
@@ -71,7 +90,7 @@ export default function PaymentForm() {
           label="Expiration Date"
           placeholder="MM / YYYY"
           mt="sm"
-          maxLength={6}
+          maxLength={7}
           {...form.getInputProps("Expiration Date")}
         />
         <PasswordInput
