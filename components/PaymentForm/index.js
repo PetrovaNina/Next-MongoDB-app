@@ -44,14 +44,16 @@ export default function PaymentForm() {
   const form = useForm({
     validate: {
       "Card Number": (val) =>
-        /^[\d{16}]&/.test(val) ? null : "Card Number should have 16 digits",
+        /^\d{16}$/.test(val) ? null : "Card Number should have 16 digits",
       "Expiration Date": (val) =>
-        val?.slice(0, 2) > 12
+        /^\d{2}\/\d{4}$/.test(val) && val.match(/^\d{2}/)[0] > 12
           ? "Invalid month"
-          : /^[^\d{3}\/\d{4}]&/.test(val)
-          ? "Invalid date"
-          : null,
-      CVV: (val) => (/\d{3}/.test(val) ? null : "CVV should have 3 digits"),
+          : /^\d{2}\/\d{4}$/.test(val)
+          ? null
+          : "Invalid date",
+
+      CVV: (val) => (/^\d{3}$/.test(val) ? null : "CVV should have 3 digits"),
+      Amount: (val) => (val <= 0 ? "Invalid amount" : null),
     },
     initialValues: {
       "Card Number": null,
@@ -72,6 +74,7 @@ export default function PaymentForm() {
         onPaste={(e) => {
           addNewValue(e, filterPastedValue);
         }}
+        onBlur={(e) => form.validateField(e.target.id)}
       >
         <TextInput
           required
@@ -80,7 +83,6 @@ export default function PaymentForm() {
           placeholder="1234 5678 9123 4567"
           mt="sm"
           maxLength={16}
-          hideControls={true}
           {...form.getInputProps("Card Number")}
         />
 
