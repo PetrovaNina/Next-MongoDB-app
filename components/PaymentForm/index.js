@@ -122,7 +122,14 @@ export default function PaymentForm() {
         />
 
         <Group position="center" mt="xl">
-          <Button type="submit" className={s.button}>
+          <Button
+            type="submit"
+            className={s.button}
+            disabled={
+              !!Object.keys(form.errors).length ||
+              Object.values(form.values).some((val) => !val)
+            }
+          >
             Submit
           </Button>
         </Group>
