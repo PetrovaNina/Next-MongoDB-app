@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Footer } from "../components/Footer";
+import Footer from "../components/Footer";
 import PaymentForm from "../components/PaymentForm";
 import s from "../styles/Home.module.scss";
 
@@ -31,7 +31,6 @@ export default function Home() {
         </p>
         <PaymentForm />
       </main>
-      {/* <footer className={s.footer}></footer> */}
       <Footer />
     </>
   );
