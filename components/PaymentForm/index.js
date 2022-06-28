@@ -56,10 +56,10 @@ export default function PaymentForm() {
       Amount: (val) => (val <= 0 ? "Invalid amount" : null),
     },
     initialValues: {
-      "Card Number": null,
-      "Expiration Date": null,
-      CVV: null,
-      Amount: null,
+      "Card Number": "",
+      "Expiration Date": "",
+      CVV: "",
+      Amount: undefined,
     },
   });
 
@@ -67,13 +67,14 @@ export default function PaymentForm() {
     <Box sx={{ width: "100%", maxWidth: 340 }} mx="auto">
       <form
         className={s.form}
-        onSubmit={form.onSubmit((values) => console.log(values))}
-        onKeyPress={(e) => {
-          addNewValue(e, preventNotDigitInput);
-        }}
-        onPaste={(e) => {
-          addNewValue(e, filterPastedValue);
-        }}
+        onSubmit={form.onSubmit((values) => {
+          fetch("/api/payment", {
+            method: "POST",
+            body: JSON.stringify(values),
+          });
+        })}
+        onKeyPress={(e) => addNewValue(e, preventNotDigitInput)}
+        onPaste={(e) => addNewValue(e, filterPastedValue)}
         onBlur={(e) => form.validateField(e.target.id)}
       >
         <TextInput
