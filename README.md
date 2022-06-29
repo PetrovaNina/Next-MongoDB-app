@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) that uses [MongoDB](https://www.mongodb.com/).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) that uses [Mantine UI](https://mantine.dev/) and [MongoDB](https://www.mongodb.com/).
 
 
 ### Running the Application
@@ -13,6 +13,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 After the form submission all the data is inserting into the database via `pages/api/payment`. 
-Sussessful "PUT" request returns the JSON object with "RequestId" and "Amount" properties.
+Successful "PUT" request returns the JSON object with "RequestId" and "Amount" properties.
 
 
