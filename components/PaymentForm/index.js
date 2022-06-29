@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 export default function PaymentForm() {
   const [submited, setSubmited] = useState(false);
   const [response, setResponse] = useState(null);
-  
+
   const formRef = useRef(null);
 
   const handleSubmit = (values) => {
@@ -77,7 +77,9 @@ export default function PaymentForm() {
       "Card Number": (val) =>
         /^\d{16}$/.test(val) ? null : "Card Number should have 16 digits",
       "Expiration Date": (val) =>
-        /^\d{2}\/\d{4}$/.test(val) && val.match(/^\d{2}/)[0] > 12
+        /^\d{2}\/\d{4}$/.test(val) &&
+        val.match(/^\d{2}/)[0] === "00" ||
+        val.match(/^\d{2}/)[0] > 12
           ? "Invalid month"
           : /^\d{2}\/\d{4}$/.test(val)
           ? null
