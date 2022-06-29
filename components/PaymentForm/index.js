@@ -13,13 +13,20 @@ import { useEffect, useRef, useState } from "react";
 
 export default function PaymentForm() {
   const [submited, setSubmited] = useState(false);
+  const [response, setResponse] = useState(null);
+  
   const formRef = useRef(null);
 
   const handleSubmit = (values) => {
     setSubmited(true);
+    setResponse("Pending");
+
     fetch("/api/payment", {
       method: "POST",
       body: JSON.stringify(values),
+    }).then(async (serwerRes) => {
+      await serwerRes.json();
+      setResponse("Success!");
     });
   };
 
@@ -31,8 +38,8 @@ export default function PaymentForm() {
 
   useEffect(() => {
     if (submited && formRef) {
-      disableAll(formRef.current.elements)
-    };
+      disableAll(formRef.current.elements);
+    }
   }, [submited]);
 
   const preventNotDigitInput = (e) => {
@@ -156,6 +163,7 @@ export default function PaymentForm() {
           </Button>
         </Group>
       </form>
+      {!!response && <h5 style={{ textAlign: "center" }}>{response}</h5>}
     </Box>
   );
 }
