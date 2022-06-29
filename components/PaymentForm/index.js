@@ -23,14 +23,16 @@ export default function PaymentForm() {
     });
   };
 
-  const disableAll = (currentParent) => {
-    for (const el of currentParent.elements) {
+  const disableAll = (collection) => {
+    for (const el of collection) {
       el.setAttribute("disabled", true);
     }
   };
 
   useEffect(() => {
-    if (submited && form) disableAll(form.current);
+    if (submited && formRef) {
+      disableAll(formRef.current.elements)
+    };
   }, [submited]);
 
   const preventNotDigitInput = (e) => {
