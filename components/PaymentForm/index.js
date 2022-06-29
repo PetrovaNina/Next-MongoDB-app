@@ -9,8 +9,30 @@ import {
 } from "@mantine/core";
 
 import s from "./PaymentForm.module.scss";
+import { useEffect, useRef, useState } from "react";
 
 export default function PaymentForm() {
+  const [submited, setSubmited] = useState(false);
+  const formRef = useRef(null);
+
+  const handleSubmit = (values) => {
+    setSubmited(true);
+    fetch("/api/payment", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+  };
+
+  const disableAll = (currentParent) => {
+    for (const el of currentParent.elements) {
+      el.setAttribute("disabled", true);
+    }
+  };
+
+  useEffect(() => {
+    if (submited && form) disableAll(form.current);
+  }, [submited]);
+
   const preventNotDigitInput = (e) => {
     /^\D{1}$/g.test(e.key) && e.preventDefault();
   };
@@ -66,13 +88,9 @@ export default function PaymentForm() {
   return (
     <Box sx={{ width: "100%", maxWidth: 340 }} mx="auto">
       <form
+        ref={formRef}
         className={s.form}
-        onSubmit={form.onSubmit((values) => {
-          fetch("/api/payment", {
-            method: "POST",
-            body: JSON.stringify(values),
-          });
-        })}
+        onSubmit={form.onSubmit(handleSubmit)}
         onKeyPress={(e) => addNewValue(e, preventNotDigitInput)}
         onPaste={(e) => addNewValue(e, filterPastedValue)}
         onBlur={(e) => form.validateField(e.target.id)}
@@ -97,6 +115,7 @@ export default function PaymentForm() {
           {...form.getInputProps("Expiration Date")}
         />
         <PasswordInput
+          disabled={submited}
           required
           id="CVV"
           label="CVV"
